@@ -1,4 +1,4 @@
-let { contas } = require('../bancodedados');
+let { contas, numeroDaConta } = require('../bancodedados');
 
 const cadastroDeNovaContaBancaria = (req, res) => {
     const { nome, cpf, data_nascimento, telefone, email, senha } = req.body;
@@ -27,16 +27,12 @@ const cadastroDeNovaContaBancaria = (req, res) => {
         return res.status(400).json({ mensagem: 'A senha é obrigatória' })
     }
 
+
     let saldo = 0
 
-    // pega todas as contas e busca o maior numero da conta e soma mais um
-
-    contas.find((maiorNumeroDeConta) => {
-        return maiorNumeroDeConta >= contas.numero
-    })
 
     const novaContaBancaria = {
-        numero: maiorNumeroDeConta,
+        numero: numeroDaConta++,
         saldo,
         usuario: {
             nome,
@@ -50,7 +46,7 @@ const cadastroDeNovaContaBancaria = (req, res) => {
 
     contas.push(novaContaBancaria);
 
-    return res.status(201).json(novaContaBancaria);
+    return res.status(201).json();
 }
 
 
@@ -65,6 +61,27 @@ const listarContas = (req, res) => {
 
 }
 
+const excluirConta = (req, res) => {
+    const { numeroConta } = req.params;
+
+    const conta = contas.find((conta) => {
+        return conta.numero === Number(numeroConta);
+    });
+
+    if (!conta) {
+        return res.status(404).json({ mensagem: 'A conta não existe.' })
+    }
+
+    if (conta.saldo === 0) {
+        contas = contas.filter((conta) => {
+            return conta.numero !== Number(numeroConta);
+        });
+        return res.status(204).send();
+    } else {
+        return res.status(404).json({ mensagem: 'A conta só pode ser removida se o saldo for zero!' })
+    }
+
+}
 
 const atualizarUsuario = (req, res) => {
     const { numeroConta, usuario } = req.params;
@@ -95,7 +112,7 @@ const atualizarUsuario = (req, res) => {
     }
 
     const conta = contas.find((conta) => {
-        return conta.numeroConta === Number(numeroConta);
+        return conta.numero === Number(numeroConta);
     });
 
     if (!conta) {
@@ -115,23 +132,7 @@ const atualizarUsuario = (req, res) => {
     return res.status(204).send();
 }
 
-const excluirConta = (req, res) => {
-    const { numeroConta } = req.params;
 
-    const conta = contas.find((conta) => {
-        return conta.numeroConta === Number(numeroConta);
-    });
-
-    if (!conta) {
-        return res.status(404).json({ mensagem: 'A conta não existe.' })
-    }
-
-    conta = contas.filter((conta) => {
-        return conta.numeroConta !== Number(numeroConta);
-    });
-
-    return res.status(204).send();
-}
 
 
 module.exports = {
