@@ -8,8 +8,7 @@ const rotas = express();
 rotas.post('/contas', contas.cadastroDeNovaContaBancaria);
 
 //listar contas através de liberação de senha
-rotas.get('/contas?senha_banco=Cubos123Bank', contas.listarContas)
-
+rotas.get('/contas', contas.listarContas)
 
 
 

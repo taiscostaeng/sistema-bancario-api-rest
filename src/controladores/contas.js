@@ -26,12 +26,15 @@ const cadastroDeNovaContaBancaria = (req, res) => {
         return res.status(400).json({ mensagem: 'A senha é obrigatória' })
     }
 
-    let identificadorConta = 0
     let saldo = 0
+    let identificadorDeContaBancaria = 1
 
+    contas.find((numeroDaContaAtual) => {
+        return numeroDaContaAtual > numero
+    })
 
     const novaContaBancaria = {
-        numero: identificadorConta++,
+        numero: identificadorDeContaBancaria++,
         saldo,
         usuario: {
             nome,
@@ -48,14 +51,17 @@ const cadastroDeNovaContaBancaria = (req, res) => {
     return res.status(201).json(novaContaBancaria);
 }
 
-//CPF deve ser um campo único.
-//E-mail deve ser um campo único.
-
 
 const listarContas = (req, res) => {
-    return res.status(200).json(contas);
-}
+    const { senha_banco } = req.query
 
+    if (senha_banco === "Cubos123Bank") {
+        return res.status(200).json(contas);
+    } else {
+        return res.status(403).json({ mensagem: "A senha do banco informada é inválida!" });
+    }
+
+}
 
 
 module.exports = {
