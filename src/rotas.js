@@ -1,5 +1,6 @@
 const express = require('express');
 const contas = require('./controladores/contas');
+const transacoes = require('./controladores/transacoes')
 
 const rotas = express();
 
@@ -11,10 +12,12 @@ rotas.post('/contas', contas.cadastroDeNovaContaBancaria);
 rotas.get('/contas', contas.listarContas);
 
 //atualizar usuário da conta bancária
-rotas.put('/contas/:numeroConta/usuario', contas.atualizarUsuario);
+rotas.put('/contas/:numeroConta', contas.atualizarUsuario);
 
 //deletar conta bancária
 rotas.delete('/contas/:numeroConta', contas.excluirConta);
 
+//deposito
+rotas.post('/transacoes/depositar', transacoes.deposito);
 
 module.exports = rotas;

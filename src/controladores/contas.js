@@ -122,12 +122,16 @@ const atualizarUsuario = (req, res) => {
         });
     }
 
-    conta.nome = nome;
-    conta.cpf = cpf;
-    conta.data_nascimento = data_nascimento;
-    conta.telefone = telefone;
-    conta.email = email;
-    conta.senha = senha;
+    conta.numero = Number(numeroConta);
+    conta.saldo = conta.saldo;
+    conta.usuario = {
+        nome,
+        cpf,
+        data_nascimento,
+        telefone,
+        email,
+        senha,
+    }
 
     return res.status(204).send();
 }
