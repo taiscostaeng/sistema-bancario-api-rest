@@ -1,13 +1,13 @@
-let { contas } = require('../bancodedados');
+let { contas, depositos } = require('../bancodedados');
 
 const deposito = (req, res) => {
-    const { numero_conta, valor } = req.body;
+    const { numero_conta, Valor } = req.body;
 
     if (!numero_conta) {
         return res.status(400).json({ mensagem: 'O número da conta é obrigatório' })
     }
 
-    if (!valor) {
+    if (!Valor) {
         return res.status(400).json({ mensagem: 'O valor para depósito é obrigatório' })
     }
 
@@ -22,11 +22,20 @@ const deposito = (req, res) => {
         });
     }
 
-    if (valor <= 0) {
+    if (Valor <= 0) {
         return res.status(400).json({ mensagem: 'Valor para depósito inválido' })
     }
 
-    conta.saldo = conta.saldo + Number(valor)
+    conta.saldo = conta.saldo + Number(Valor)
+
+    const novoDeposito = {
+        data: new Date(),
+        numero_conta,
+        valor: conta.saldo,
+    }
+
+    depositos.unshift(novoDeposito);
+
     return res.status(201).json();
 
 }
