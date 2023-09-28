@@ -3,6 +3,7 @@ let { contas, numeroDaConta, saques, depositos, transferencias } = require('../b
 const cadastroDeNovaContaBancaria = (req, res) => {
     const { nome, cpf, data_nascimento, telefone, email, senha } = req.body;
 
+
     if (!nome) {
         return res.status(400).json({ mensagem: 'O nome é obrigatório' })
     }
@@ -27,24 +28,40 @@ const cadastroDeNovaContaBancaria = (req, res) => {
         return res.status(400).json({ mensagem: 'A senha é obrigatória' })
     }
 
-    let saldo = 0
-
-    const novaContaBancaria = {
-        numero: numeroDaConta++,
-        saldo,
-        usuario: {
-            nome,
-            cpf,
-            data_nascimento,
-            telefone,
-            email,
-            senha,
+    const verificacaoCpf = contas.find((conta) => {
+        if (conta.usuario.cpf === cpf) {
+            return res.status(404).json({ mensagem: 'CPF já cadastrado' });
         }
+    });
+
+    const verificacaoEmail = contas.find((conta) => {
+        if (conta.usuario.email === email) {
+            return res.status(404).json({ mensagem: 'E-mail já cadastrado' });
+        }
+    });
+
+
+    if (!verificacaoCpf && !verificacaoEmail) {
+        let saldo = 0
+
+        const novaContaBancaria = {
+            numero: numeroDaConta++,
+            saldo,
+            usuario: {
+                nome,
+                cpf,
+                data_nascimento,
+                telefone,
+                email,
+                senha,
+            }
+        }
+
+        contas.push(novaContaBancaria);
+        return res.status(201).json();
     }
 
-    contas.push(novaContaBancaria);
 
-    return res.status(201).json();
 }
 
 
@@ -62,13 +79,16 @@ const listarContas = (req, res) => {
 const excluirConta = (req, res) => {
     const { numeroConta } = req.params;
 
+
     const conta = contas.find((conta) => {
         return conta.numero === Number(numeroConta);
     });
 
+
     if (!conta) {
         return res.status(404).json({ mensagem: 'A conta não existe.' })
     }
+
 
     if (conta.saldo === 0) {
         contas = contas.filter((conta) => {
@@ -84,6 +104,7 @@ const excluirConta = (req, res) => {
 const atualizarUsuario = (req, res) => {
     const { numeroConta } = req.params;
     const { nome, cpf, data_nascimento, telefone, email, senha } = req.body;
+
 
     if (!nome) {
         return res.status(400).json({ mensagem: 'O nome é obrigatório' })
@@ -109,6 +130,7 @@ const atualizarUsuario = (req, res) => {
         return res.status(400).json({ mensagem: 'A senha é obrigatória' })
     }
 
+
     const conta = contas.find((conta) => {
         return conta.numero === Number(numeroConta);
     });
@@ -119,6 +141,7 @@ const atualizarUsuario = (req, res) => {
                 'Conta não encontrada'
         });
     }
+
 
     conta.numero = Number(numeroConta);
     conta.saldo = conta.saldo;
@@ -138,6 +161,7 @@ const atualizarUsuario = (req, res) => {
 const saldo = (req, res) => {
     const { numero_conta, senha } = req.query;
 
+
     if (!senha) {
         return res.status(403).json({ mensagem: "É necessário informar uma senha" });
     }
@@ -145,6 +169,7 @@ const saldo = (req, res) => {
     if (!numero_conta) {
         return res.status(403).json({ mensagem: "É necessário informar um numero de conta" });
     }
+
 
     const conta = contas.find((conta) => {
         return conta.numero === Number(numero_conta)
@@ -157,9 +182,11 @@ const saldo = (req, res) => {
         });
     }
 
+
     if (conta.usuario.senha !== senha) {
         return res.status(403).json({ mensagem: "Senha inválida!" });
     }
+
 
     return res.status(200).json(conta.saldo);
 
@@ -168,6 +195,7 @@ const saldo = (req, res) => {
 const extrato = (req, res) => {
     const { numero_conta, senha } = req.query;
 
+
     if (!senha) {
         return res.status(403).json({ mensagem: "É necessário informar uma senha" });
     }
@@ -175,6 +203,7 @@ const extrato = (req, res) => {
     if (!numero_conta) {
         return res.status(403).json({ mensagem: "É necessário informar um numero de conta" });
     }
+
 
     const conta = contas.find((conta) => {
         return conta.numero === Number(numero_conta)
@@ -187,9 +216,11 @@ const extrato = (req, res) => {
         });
     }
 
+
     if (conta.usuario.senha !== senha) {
         return res.status(403).json({ mensagem: "Senha inválida!" });
     }
+
 
     const extratoBancario = {
         saques,
