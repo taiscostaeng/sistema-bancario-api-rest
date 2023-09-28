@@ -23,4 +23,7 @@ rotas.post('/transacoes/depositar', transacoes.deposito);
 //saque
 rotas.post('/transacoes/sacar', transacoes.saque);
 
+//listar saldo através de liberação de senha
+rotas.get('/contas/saldo', transacoes.saldo);
+
 module.exports = rotas;
