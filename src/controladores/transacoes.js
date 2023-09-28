@@ -31,7 +31,7 @@ const deposito = (req, res) => {
     const novoDeposito = {
         data: new Date(),
         numero_conta,
-        valor: conta.saldo,
+        valor,
     }
 
     // deve-se registrar o valor depositado ou o saldo pós deposito?
@@ -82,10 +82,8 @@ const saque = (req, res) => {
     const novoSaque = {
         data: new Date(),
         numero_conta,
-        valor: conta.saldo,
+        valor,
     }
-
-    // deve-se registrar o valor sacado ou o saldo pós saque?
 
     saques.unshift(novoSaque);
 
@@ -93,40 +91,17 @@ const saque = (req, res) => {
 
 }
 
+const transferencias = (req, res) => {
+    const { numero_conta_origem, numero_conta_destino, valor, senha } = req.body;
 
-const saldo = (req, res) => {
-    const { numero_conta, senha } = req.query;
 
-    if (!senha) {
-        return res.status(403).json({ mensagem: "É necessário informar uma senha" });
-    }
-
-    if (!numero_conta) {
-        return res.status(403).json({ mensagem: "É necessário informar um numero de conta" });
-    }
-
-    const conta = contas.find((conta) => {
-        return conta.numero === Number(numero_conta)
-    });
-
-    if (!conta) {
-        return res.status(404).json({
-            mensagem:
-                'Conta não encontrada'
-        });
-    }
-
-    if (conta.usuario.senha !== senha) {
-        return res.status(403).json({ mensagem: "Senha inválida!" });
-    }
-
-    return res.status(200).json(conta.saldo);
 
 }
+
 
 
 module.exports = {
     deposito,
     saque,
-    saldo
+    transferencias
 }

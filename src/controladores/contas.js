@@ -1,4 +1,4 @@
-let { contas, numeroDaConta } = require('../bancodedados');
+let { contas, numeroDaConta, saques, depositos, transferencias } = require('../bancodedados');
 
 const cadastroDeNovaContaBancaria = (req, res) => {
     const { nome, cpf, data_nascimento, telefone, email, senha } = req.body;
@@ -135,11 +135,77 @@ const atualizarUsuario = (req, res) => {
 }
 
 
+const saldo = (req, res) => {
+    const { numero_conta, senha } = req.query;
 
+    if (!senha) {
+        return res.status(403).json({ mensagem: "É necessário informar uma senha" });
+    }
+
+    if (!numero_conta) {
+        return res.status(403).json({ mensagem: "É necessário informar um numero de conta" });
+    }
+
+    const conta = contas.find((conta) => {
+        return conta.numero === Number(numero_conta)
+    });
+
+    if (!conta) {
+        return res.status(404).json({
+            mensagem:
+                'Conta não encontrada'
+        });
+    }
+
+    if (conta.usuario.senha !== senha) {
+        return res.status(403).json({ mensagem: "Senha inválida!" });
+    }
+
+    return res.status(200).json(conta.saldo);
+
+}
+
+const extrato = (req, res) => {
+    const { numero_conta, senha } = req.query;
+
+    if (!senha) {
+        return res.status(403).json({ mensagem: "É necessário informar uma senha" });
+    }
+
+    if (!numero_conta) {
+        return res.status(403).json({ mensagem: "É necessário informar um numero de conta" });
+    }
+
+    const conta = contas.find((conta) => {
+        return conta.numero === Number(numero_conta)
+    });
+
+    if (!conta) {
+        return res.status(404).json({
+            mensagem:
+                'Conta não encontrada'
+        });
+    }
+
+    if (conta.usuario.senha !== senha) {
+        return res.status(403).json({ mensagem: "Senha inválida!" });
+    }
+
+    const extratoBancario = {
+        saques,
+        depositos,
+        transferencias,
+    }
+
+    return res.status(200).json(extratoBancario);
+
+}
 
 module.exports = {
     cadastroDeNovaContaBancaria,
     listarContas,
     atualizarUsuario,
-    excluirConta
+    excluirConta,
+    saldo,
+    extrato
 }
