@@ -94,6 +94,66 @@ const saque = (req, res) => {
 const transferencias = (req, res) => {
     const { numero_conta_origem, numero_conta_destino, valor, senha } = req.body;
 
+    if (!numero_conta_origem) {
+        return res.status(400).json({ mensagem: 'O número da conta de origem é obrigatório' })
+    }
+
+    if (!numero_conta_destino) {
+        return res.status(400).json({ mensagem: 'O número da conta de destino é obrigatório' })
+    }
+
+    if (!valor) {
+        return res.status(400).json({ mensagem: 'O valor para transferência é obrigatório' })
+    }
+
+    if (!senha) {
+        return res.status(400).json({ mensagem: 'Senha inválida.' })
+    }
+
+
+    const contaOrigem = contas.find((conta) => {
+        return conta.numero === Number(numero_conta_origem)
+    });
+
+    if (!contaOrigem) {
+        return res.status(404).json({
+            mensagem:
+                'Conta de origem não encontrada'
+        });
+    }
+
+    const contaDestino = contas.find((conta) => {
+        return conta.numero === Number(numero_conta_destino)
+    });
+
+    if (!contaDestino) {
+        return res.status(404).json({
+            mensagem:
+                'Conta de destino não encontrada'
+        });
+    }
+
+
+    if (contaOrigem.usuario.senha !== senha) {
+        return res.status(404).json({
+            mensagem:
+                'Senha inválida'
+        });
+    }
+
+
+    if (contaOrigem.saldo < valor) {
+        return res.status(404).json({
+            mensagem:
+                'Saldo insuficiente'
+        });
+    }
+
+    // Subtrair o valor da transfência do saldo na conta de origem
+
+    contaOrigem.saldo = contaOrigem.saldo - valor
+    contaDestino.saldo = contaDestino + valor
+
 
 
 }
