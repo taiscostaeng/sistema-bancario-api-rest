@@ -1,13 +1,13 @@
-let { contas, depositos } = require('../bancodedados');
+let { contas, depositos, saques } = require('../bancodedados');
 
 const deposito = (req, res) => {
-    const { numero_conta, Valor } = req.body;
+    const { numero_conta, valor } = req.body;
 
     if (!numero_conta) {
         return res.status(400).json({ mensagem: 'O número da conta é obrigatório' })
     }
 
-    if (!Valor) {
+    if (!valor) {
         return res.status(400).json({ mensagem: 'O valor para depósito é obrigatório' })
     }
 
@@ -22,17 +22,19 @@ const deposito = (req, res) => {
         });
     }
 
-    if (Valor <= 0) {
+    if (valor <= 0) {
         return res.status(400).json({ mensagem: 'Valor para depósito inválido' })
     }
 
-    conta.saldo = conta.saldo + Number(Valor)
+    conta.saldo = conta.saldo + Number(valor)
 
     const novoDeposito = {
         data: new Date(),
         numero_conta,
         valor: conta.saldo,
     }
+
+    // deve-se registrar o valor depositado ou o saldo pós deposito?
 
     depositos.unshift(novoDeposito);
 
@@ -41,7 +43,58 @@ const deposito = (req, res) => {
 }
 
 
+const saque = (req, res) => {
+    const { numero_conta, valor, senha } = req.body;
+
+    if (!numero_conta) {
+        return res.status(400).json({ mensagem: 'O número da conta é obrigatório' })
+    }
+
+    if (!valor) {
+        return res.status(400).json({ mensagem: 'O valor para deposito é obrigatório' })
+    }
+
+    if (!senha) {
+        return res.status(400).json({ mensagem: 'A senha é obrigatória' })
+    }
+
+    const conta = contas.find((conta) => {
+        return conta.numero === Number(numero_conta)
+    });
+
+    if (!conta) {
+        return res.status(404).json({
+            mensagem:
+                'Conta não encontrada'
+        });
+    }
+
+    if (conta.usuario.senha !== senha) {
+        return res.status(400).json({ mensagem: 'Senha inválida' })
+    }
+
+    if (conta.saldo <= valor) {
+        return res.status(400).json({ mensagem: 'Saldo insuficiente' })
+    }
+
+    conta.saldo = conta.saldo - Number(valor)
+
+    const novoSaque = {
+        data: new Date(),
+        numero_conta,
+        valor: conta.saldo,
+    }
+
+    // deve-se registrar o valor sacado ou o saldo pós saque?
+
+    saques.unshift(novoSaque);
+
+    return res.status(201).json();
+
+}
+
 
 module.exports = {
-    deposito
+    deposito,
+    saque
 }

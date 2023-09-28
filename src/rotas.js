@@ -20,4 +20,7 @@ rotas.delete('/contas/:numeroConta', contas.excluirConta);
 //deposito
 rotas.post('/transacoes/depositar', transacoes.deposito);
 
+//saque
+rotas.post('/transacoes/sacar', transacoes.saque);
+
 module.exports = rotas;
