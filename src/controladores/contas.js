@@ -27,9 +27,7 @@ const cadastroDeNovaContaBancaria = (req, res) => {
         return res.status(400).json({ mensagem: 'A senha é obrigatória' })
     }
 
-
     let saldo = 0
-
 
     const novaContaBancaria = {
         numero: numeroDaConta++,
@@ -84,7 +82,7 @@ const excluirConta = (req, res) => {
 }
 
 const atualizarUsuario = (req, res) => {
-    const { numeroConta, usuario } = req.params;
+    const { numeroConta } = req.params;
     const { nome, cpf, data_nascimento, telefone, email, senha } = req.body;
 
     if (!nome) {
