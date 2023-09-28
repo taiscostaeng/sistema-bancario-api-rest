@@ -1,7 +1,8 @@
-let { contas, depositos, saques } = require('../bancodedados');
+let { contas, depositos, saques, transferencias } = require('../bancodedados');
 
 const deposito = (req, res) => {
     const { numero_conta, valor } = req.body;
+
 
     if (!numero_conta) {
         return res.status(400).json({ mensagem: 'O número da conta é obrigatório' })
@@ -10,6 +11,7 @@ const deposito = (req, res) => {
     if (!valor) {
         return res.status(400).json({ mensagem: 'O valor para depósito é obrigatório' })
     }
+
 
     const conta = contas.find((conta) => {
         return conta.numero === Number(numero_conta)
@@ -22,19 +24,20 @@ const deposito = (req, res) => {
         });
     }
 
+
     if (valor <= 0) {
         return res.status(400).json({ mensagem: 'Valor para depósito inválido' })
     }
 
+
     conta.saldo = conta.saldo + Number(valor)
+
 
     const novoDeposito = {
         data: new Date(),
         numero_conta,
         valor,
     }
-
-    // deve-se registrar o valor depositado ou o saldo pós deposito?
 
     depositos.unshift(novoDeposito);
 
@@ -45,6 +48,7 @@ const deposito = (req, res) => {
 
 const saque = (req, res) => {
     const { numero_conta, valor, senha } = req.body;
+
 
     if (!numero_conta) {
         return res.status(400).json({ mensagem: 'O número da conta é obrigatório' })
@@ -58,6 +62,7 @@ const saque = (req, res) => {
         return res.status(400).json({ mensagem: 'A senha é obrigatória' })
     }
 
+
     const conta = contas.find((conta) => {
         return conta.numero === Number(numero_conta)
     });
@@ -69,15 +74,19 @@ const saque = (req, res) => {
         });
     }
 
+
     if (conta.usuario.senha !== senha) {
         return res.status(400).json({ mensagem: 'Senha inválida' })
     }
+
 
     if (conta.saldo <= valor) {
         return res.status(400).json({ mensagem: 'Saldo insuficiente' })
     }
 
+
     conta.saldo = conta.saldo - Number(valor)
+
 
     const novoSaque = {
         data: new Date(),
@@ -91,8 +100,9 @@ const saque = (req, res) => {
 
 }
 
-const transferencias = (req, res) => {
+const transferencia = (req, res) => {
     const { numero_conta_origem, numero_conta_destino, valor, senha } = req.body;
+
 
     if (!numero_conta_origem) {
         return res.status(400).json({ mensagem: 'O número da conta de origem é obrigatório' })
@@ -149,19 +159,25 @@ const transferencias = (req, res) => {
         });
     }
 
-    // Subtrair o valor da transfência do saldo na conta de origem
-
     contaOrigem.saldo = contaOrigem.saldo - valor
     contaDestino.saldo = contaDestino + valor
 
+    const novaTransferencia = {
+        data: new Date(),
+        numero_conta_origem,
+        numero_conta_destino,
+        valor,
+    }
 
+    transferencias.unshift(novaTransferencia);
+
+    return res.status(201).json();
 
 }
-
 
 
 module.exports = {
     deposito,
     saque,
-    transferencias
+    transferencia
 }

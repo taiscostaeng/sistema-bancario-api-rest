@@ -5,31 +5,18 @@ const transacoes = require('./controladores/transacoes')
 const rotas = express();
 
 
-//cadastrar conta
 rotas.post('/contas', contas.cadastroDeNovaContaBancaria);
 
-//listar contas através de liberação de senha
 rotas.get('/contas', contas.listarContas);
-
-//atualizar usuário da conta bancária
-rotas.put('/contas/:numeroConta', contas.atualizarUsuario);
-
-//deletar conta bancária
-rotas.delete('/contas/:numeroConta', contas.excluirConta);
-
-//deposito
-rotas.post('/transacoes/depositar', transacoes.deposito);
-
-//saque
-rotas.post('/transacoes/sacar', transacoes.saque);
-
-//listar saldo através de liberação de senha
 rotas.get('/contas/saldo', contas.saldo);
-
-//extrato
 rotas.get('/contas/extrato', contas.extrato);
 
-//transferencias
-rotas.post('/transacoes/transferir', transacoes.transferencias);
+rotas.put('/contas/:numeroConta', contas.atualizarUsuario);
+
+rotas.delete('/contas/:numeroConta', contas.excluirConta);
+
+rotas.post('/transacoes/depositar', transacoes.deposito);
+rotas.post('/transacoes/sacar', transacoes.saque);
+rotas.post('/transacoes/transferir', transacoes.transferencia);
 
 module.exports = rotas;
