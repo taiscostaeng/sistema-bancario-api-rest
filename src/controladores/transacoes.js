@@ -5,11 +5,11 @@ const deposito = (req, res) => {
 
 
     if (!numero_conta) {
-        return res.status(400).json({ mensagem: 'O número da conta é obrigatório' })
+        return res.status(404).json({ mensagem: 'O número da conta é obrigatório' })
     }
 
     if (!valor) {
-        return res.status(400).json({ mensagem: 'O valor para depósito é obrigatório' })
+        return res.status(404).json({ mensagem: 'O valor para depósito é obrigatório' })
     }
 
 
@@ -41,7 +41,7 @@ const deposito = (req, res) => {
 
     depositos.unshift(novoDeposito);
 
-    return res.status(201).json();
+    return res.status(204).json();
 
 }
 
@@ -51,15 +51,15 @@ const saque = (req, res) => {
 
 
     if (!numero_conta) {
-        return res.status(400).json({ mensagem: 'O número da conta é obrigatório' })
+        return res.status(404).json({ mensagem: 'O número da conta é obrigatório' })
     }
 
     if (!valor) {
-        return res.status(400).json({ mensagem: 'O valor para deposito é obrigatório' })
+        return res.status(404).json({ mensagem: 'O valor para deposito é obrigatório' })
     }
 
     if (!senha) {
-        return res.status(400).json({ mensagem: 'A senha é obrigatória' })
+        return res.status(404).json({ mensagem: 'A senha é obrigatória' })
     }
 
 
@@ -76,12 +76,12 @@ const saque = (req, res) => {
 
 
     if (conta.usuario.senha !== senha) {
-        return res.status(400).json({ mensagem: 'Senha inválida' })
+        return res.status(404).json({ mensagem: 'Senha inválida' })
     }
 
 
     if (conta.saldo <= valor) {
-        return res.status(400).json({ mensagem: 'Saldo insuficiente' })
+        return res.status(403).json({ mensagem: 'Saldo insuficiente' })
     }
 
 
@@ -96,7 +96,7 @@ const saque = (req, res) => {
 
     saques.unshift(novoSaque);
 
-    return res.status(201).json();
+    return res.status(204).json();
 
 }
 
@@ -105,19 +105,19 @@ const transferencia = (req, res) => {
 
 
     if (!numero_conta_origem) {
-        return res.status(400).json({ mensagem: 'O número da conta de origem é obrigatório' })
+        return res.status(404).json({ mensagem: 'O número da conta de origem é obrigatório' })
     }
 
     if (!numero_conta_destino) {
-        return res.status(400).json({ mensagem: 'O número da conta de destino é obrigatório' })
+        return res.status(404).json({ mensagem: 'O número da conta de destino é obrigatório' })
     }
 
     if (!valor) {
-        return res.status(400).json({ mensagem: 'O valor para transferência é obrigatório' })
+        return res.status(404).json({ mensagem: 'O valor para transferência é obrigatório' })
     }
 
     if (!senha) {
-        return res.status(400).json({ mensagem: 'Senha inválida.' })
+        return res.status(404).json({ mensagem: 'Senha inválida.' })
     }
 
 
@@ -145,7 +145,7 @@ const transferencia = (req, res) => {
 
 
     if (contaOrigem.usuario.senha !== senha) {
-        return res.status(404).json({
+        return res.status(403).json({
             mensagem:
                 'Senha inválida'
         });
@@ -153,7 +153,7 @@ const transferencia = (req, res) => {
 
 
     if (contaOrigem.saldo < valor) {
-        return res.status(404).json({
+        return res.status(403).json({
             mensagem:
                 'Saldo insuficiente'
         });

@@ -5,27 +5,27 @@ const cadastroDeNovaContaBancaria = (req, res) => {
 
 
     if (!nome) {
-        return res.status(400).json({ mensagem: 'O nome é obrigatório' })
+        return res.status(404).json({ mensagem: 'O nome é obrigatório' })
     }
 
     if (!cpf) {
-        return res.status(400).json({ mensagem: 'O cpf é obrigatório' })
+        return res.status(404).json({ mensagem: 'O cpf é obrigatório' })
     }
 
     if (!data_nascimento) {
-        return res.status(400).json({ mensagem: 'A data de nascimento é obrigatória' })
+        return res.status(404).json({ mensagem: 'A data de nascimento é obrigatória' })
     }
 
     if (!telefone) {
-        return res.status(400).json({ mensagem: 'O telefone é obrigatório' })
+        return res.status(404).json({ mensagem: 'O telefone é obrigatório' })
     }
 
     if (!email) {
-        return res.status(400).json({ mensagem: 'O email é obrigatório' })
+        return res.status(404).json({ mensagem: 'O email é obrigatório' })
     }
 
     if (!senha) {
-        return res.status(400).json({ mensagem: 'A senha é obrigatória' })
+        return res.status(404).json({ mensagem: 'A senha é obrigatória' })
     }
 
     const verificacaoCpf = contas.find((conta) => {
@@ -58,7 +58,7 @@ const cadastroDeNovaContaBancaria = (req, res) => {
         }
 
         contas.push(novaContaBancaria);
-        return res.status(201).json();
+        return res.status(204).json();
     }
 
 
@@ -96,7 +96,7 @@ const excluirConta = (req, res) => {
         });
         return res.status(204).send();
     } else {
-        return res.status(404).json({ mensagem: 'A conta só pode ser removida se o saldo for zero!' })
+        return res.status(403).json({ mensagem: 'A conta só pode ser removida se o saldo for zero!' })
     }
 
 }
@@ -107,27 +107,27 @@ const atualizarUsuario = (req, res) => {
 
 
     if (!nome) {
-        return res.status(400).json({ mensagem: 'O nome é obrigatório' })
+        return res.status(404).json({ mensagem: 'O nome é obrigatório' })
     }
 
     if (!cpf) {
-        return res.status(400).json({ mensagem: 'O cpf é obrigatório' })
+        return res.status(404).json({ mensagem: 'O cpf é obrigatório' })
     }
 
     if (!data_nascimento) {
-        return res.status(400).json({ mensagem: 'A data de nascimento é obrigatória' })
+        return res.status(404).json({ mensagem: 'A data de nascimento é obrigatória' })
     }
 
     if (!telefone) {
-        return res.status(400).json({ mensagem: 'O telefone é obrigatório' })
+        return res.status(404).json({ mensagem: 'O telefone é obrigatório' })
     }
 
     if (!email) {
-        return res.status(400).json({ mensagem: 'O email é obrigatório' })
+        return res.status(404).json({ mensagem: 'O email é obrigatório' })
     }
 
     if (!senha) {
-        return res.status(400).json({ mensagem: 'A senha é obrigatória' })
+        return res.status(404).json({ mensagem: 'A senha é obrigatória' })
     }
 
 
@@ -141,6 +141,23 @@ const atualizarUsuario = (req, res) => {
                 'Conta não encontrada'
         });
     }
+
+
+    contas.find((conta) => {
+        if (conta.usuario.cpf === cpf) {
+            if (conta.numero !== numeroConta) {
+                return res.status(404).json({ mensagem: 'CPF já cadastrado' });
+            }
+        }
+    });
+
+    contas.find((conta) => {
+        if (conta.usuario.email === email) {
+            if (conta.numero !== numeroConta) {
+                return res.status(404).json({ mensagem: 'E-mail já cadastrado' });
+            }
+        }
+    });
 
 
     conta.numero = Number(numeroConta);
@@ -163,11 +180,11 @@ const saldo = (req, res) => {
 
 
     if (!senha) {
-        return res.status(403).json({ mensagem: "É necessário informar uma senha" });
+        return res.status(404).json({ mensagem: "É necessário informar uma senha" });
     }
 
     if (!numero_conta) {
-        return res.status(403).json({ mensagem: "É necessário informar um numero de conta" });
+        return res.status(404).json({ mensagem: "É necessário informar um numero de conta" });
     }
 
 
@@ -197,11 +214,11 @@ const extrato = (req, res) => {
 
 
     if (!senha) {
-        return res.status(403).json({ mensagem: "É necessário informar uma senha" });
+        return res.status(404).json({ mensagem: "É necessário informar uma senha" });
     }
 
     if (!numero_conta) {
-        return res.status(403).json({ mensagem: "É necessário informar um numero de conta" });
+        return res.status(404).json({ mensagem: "É necessário informar um numero de conta" });
     }
 
 
