@@ -158,7 +158,7 @@
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 <h2> ✨😊 Você quer contribuir com esse projeto? </h2>
 <li> Primeiro, você precisa realizar o fork desse projeto; </li>
-<li> Em seguida, configure o seu servidor. Você pode realizar o passo a passo seguindo esse link aqui </li>
+<li> Em seguida, configure o seu servidor. Você pode realizar o passo a passo seguindo esse <a href = "https://github.com/taiscostaeng/configuracao-servidor/tree/master"> link aqui </a> </li>
 <li> Depois, você pode realizar as alterações no código; </li>
 <li> Por fim, você precisa realizar o Pull Request (PR) para esse repositório; </li>
 
