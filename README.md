@@ -2,9 +2,9 @@
 
 <p> Esse repositório demonstra os códigos desenvolvidos para finalização do Modulo 02 do curso de Desenvolvimento Back-End pela instituição Cubos Academy. Fomos desafiados pela Cubos Academy a desenvolver um sistema bancário API REST 🤯🎯 </p>
 <li> Desenvolvi 09 rotas que buscam realizar operações básicas de um sistema bancário; </li>
+<li> Criei dois controladores (transações e contas) para armazenamento dos códigos das rotas criadas. </li> 
 <li> As rotas possuem como tipo de resquisição req.body, req.params e/ou req.params; </li>
-<li> Todas as rotas possuem a exibição de um status code adequado a resposta da requisição, seja do tipo bem-sucedida ou mal-sucedida; </li>
-<li> Foram criados dois controladores (transações e contas) para armazenamento dos códigos das rotas criadas. </li> 
+<li> Todas rotas possuem a exibição de um status code adequado a resposta da requisição, seja do tipo bem-sucedida ou mal-sucedida; </li>
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 <h2> 👩🏽‍🔧 Linguagens e Ferramentas </h2>
