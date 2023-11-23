@@ -161,7 +161,7 @@
 <li> Em seguida, você deve acessar a do projeto no terminal cd sistema-gerenciador-financeiro-api-rest </li>
 <li> Instale as bibliotecas necessárias utilizando o comando npm i </li>
 <li> Execute a aplicação em modo de desenvolvimento npm run dev </li>
-
+<li> O servidor iniciará na porta 3000 - acesse http://localhost:3000 </li>
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 <h2> ✨😊 Você quer contribuir com esse projeto? </h2>
 <li> Primeiro, você precisa realizar o clone desse projeto; </li>
