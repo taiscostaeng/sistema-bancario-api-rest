@@ -156,9 +156,18 @@
 </div>
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+<h2> ✨👩🏽‍💻 Como realizar a execução desse projeto? </h2>
+<li> Primeiro, você precisa realizar o clone desse projeto; </li>
+<li> Em seguida, você deve acessar a do projeto no terminal cd sistema-gerenciador-financeiro-api-rest </li>
+<li> Instale as bibliotecas necessárias utilizando o comando npm i </li>
+<li> Execute a aplicação em modo de desenvolvimento npm run dev </li>
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 <h2> ✨😊 Você quer contribuir com esse projeto? </h2>
-<li> Primeiro, você precisa realizar o fork desse projeto; </li>
-<li> Em seguida, configure o seu servidor. Você pode realizar o passo a passo seguindo esse <a href = "https://github.com/taiscostaeng/configuracao-servidor/tree/master"> link aqui </a> </li>
+<li> Primeiro, você precisa realizar o clone desse projeto; </li>
+<li> Em seguida, você deve acessar a do projeto no terminal cd sistema-gerenciador-financeiro-api-rest </li>
+<li> Instale as bibliotecas necessárias utilizando o comando npm i </li>
+<li> Execute a aplicação em modo de desenvolvimento npm run dev </li>
 <li> Depois, você pode realizar as alterações no código; </li>
 <li> Por fim, você precisa realizar o Pull Request (PR) para esse repositório; </li>
 
